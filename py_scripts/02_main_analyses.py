@@ -10,11 +10,11 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression, LassoCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
@@ -119,8 +119,31 @@ lr.fit(X_train, y_train)
 lr.score(X_train, y_train)
 lr.score(X_test, y_test)
 
+# Well that was terrible.  Let's try regularization
+ss = StandardScaler()
+a = np.linspace(0.1, 50, 200)
+lasso = LassoCV()
+pipe = Pipeline([('ss', ss), ('lasso', lasso)])
+pipe.fit(X_train, y_train)
+pipe.score(X_train, y_train)
+pipe.score(X_test, y_test)
 
+# Coefficients??
+list(zip(X_train.columns, lasso.coef_))
+# Good grief, everything is 0 except year, 
+# and year is negative.
 
+# SLRs
+# year
+lr_year = lr.fit(X_train[['year']], y_train)
+lr_year.score(X_train[['year']], y_train)
+lr_year.score(X_test[['year']], y_test)
+
+# food court or not
+logr = LogisticRegression()
+logr_fc = logr.fit(X_train[['fc_type']], y_train)
+logr_fc.score(X_train[['fc_type']], y_train)
+logr_fc.score(X_test[['fc_type']], y_test)
 
 
 
