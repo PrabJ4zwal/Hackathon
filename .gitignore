@@ -9,7 +9,7 @@
 *.Rhistory
 
 # Python Text Scripts
-*.py
+# *.py
 
 ## Stuff that came with the Python template from GitHub ##
 ## Thank you, GitHub! ##
