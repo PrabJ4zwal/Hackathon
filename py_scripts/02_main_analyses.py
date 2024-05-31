@@ -145,5 +145,20 @@ logr_fc = logr.fit(X_train[['fc_type']], y_train)
 logr_fc.score(X_train[['fc_type']], y_train)
 logr_fc.score(X_test[['fc_type']], y_test)
 
+# Get some predictions
+# full model
+pipe_preds_X_train = pipe.predict(X_train)
+pipe_preds_X_test = pipe.predict(X_test)
+pipe_preds_val_data = pipe.predict(val_X)
+
+# Metrics
+# full model
+
+
+
+
+
+
+
 
 
