@@ -99,7 +99,7 @@ data.drop(columns = 'open_date', inplace = True)
 # With more time, we might have checked each column in case 
 # we needed to stratify, but we have short time and it's already
 # weird, so we're just plowing ahead.
-X = data.drop(columns = 'revenue')
+X = data.drop(columns = ['revenue', 'id'])
 y = data['revenue']
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -138,12 +138,32 @@ list(zip(X_train.columns, lasso.coef_))
 lr_year = lr.fit(X_train[['year']], y_train)
 lr_year.score(X_train[['year']], y_train)
 lr_year.score(X_test[['year']], y_test)
+lr_year.coef_
 
 # food court or not
 logr = LogisticRegression()
 logr_fc = logr.fit(X_train[['fc_type']], y_train)
 logr_fc.score(X_train[['fc_type']], y_train)
 logr_fc.score(X_test[['fc_type']], y_test)
+
+# Get some predictions
+# full model
+pipe_preds_X_train = pipe.predict(X_train)
+pipe_preds_X_test = pipe.predict(X_test)
+
+# SLR
+lr_year_preds_X_train = lr_year.predict(X_train[['year']])
+lr_year_preds_X_test = lr_year.predict(X_test[['year']])
+
+# RMSE
+print(f'''
+LASSO model, training set: {mean_squared_error(y_train, pipe_preds_X_train)}
+LASSO model, testing set: {mean_squared_error(y_test, pipe_preds_X_test)}
+Year only, training set: {mean_squared_error(y_train, lr_year_preds_X_train)}
+Year only, testing set: {mean_squared_error(y_test, lr_year_preds_X_test)}''')
+
+
+
 
 
 
