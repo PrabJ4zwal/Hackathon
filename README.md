@@ -1,2 +1,0 @@
-# Hackathon
-Restaurant Sales Prediction 
